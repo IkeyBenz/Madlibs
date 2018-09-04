@@ -14,17 +14,24 @@ def displayOptions():
 def createLevel():
     print('Creating new level...\n')
     variables, story = getMadLib()
-    name = input('What do you want to call this MadLib? ')
+    name = getViableName()
     levelFile = open('Levels/' + name + '.txt', 'w')
     levelFile.write(variables + '\n' + story)
     levelFile.close()
+
+def getViableName():
+    name = input('What do you want to call this MadLib? ')
+    if name not in [level[:-4] for level in os.listdir('Levels')]:
+        return name
+    else:
+        print('The name you have chosen for your level is already in use by a different level.')
+    return getViableName()
 
 def playLevel(levelName):
     levelFile = open('./Levels/' + levelName + '.txt', 'r')
     variables = levelFile.readline()[:-1].split(' ')
     story = levelFile.readline()
-    showStory = getValidInput('Do you want to see the story before filling it in? (y/n) ', ['Y', 'y', 'N', 'n'])
-    if showStory in 'Yy':
+    if getValidInput('Do you want to see the story before filling it in? (y/n) ', ['Y', 'y', 'N', 'n']) in 'Yy':
         print(colorify(story, variables))
     print('\nCompleted MadLib:\n' + fillOutMadLib(story, variables) + '\n')
 
@@ -41,8 +48,7 @@ def levelSelect():
         playLevel(chosenLevel)
     else:
         print('There are no levels to play yet.')
-        wantsToMakeOne = getValidInput('Want to create one? (y/n): ', ['Y', 'y', 'N', 'n'])
-        if wantsToMakeOne in 'Yy':
+        if getValidInput('Want to create one? (y/n): ', ['Y', 'y', 'N', 'n']) in 'Yy':
             createLevel()
 
 def getMadLib():
@@ -51,11 +57,10 @@ def getMadLib():
         variables = input('Enter the variable names required for this level separated by spaces: ')
         story = input("Enter your story separated by spaces, enter " + variables + " for places that require user input: ")
         print('Your MadLib:', colorify(story, variables.split(' ')))
-        if input('Save? (y/n): ') == 'y':
+        if getValidInput('Save? (y/n): ', ['Y', 'y', 'N', 'n']) in 'Yy':
             keepAsking = False
     return variables, story
     
-
 def fillOutMadLib(story, variables):
     newWords = []
     variables += [v + '.' for v in variables]
