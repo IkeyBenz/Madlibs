@@ -1,0 +1,2 @@
+nameOfPerson verbEndingInIng noun
+One day nameOfPerson was verbEndingInIng to the noun.
