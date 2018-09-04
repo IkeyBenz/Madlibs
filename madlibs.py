@@ -1,5 +1,16 @@
 import os
 
+def displayOptions():
+    print("Choose what you'd like to do:\n\tP: Play Level\n\tC: Create Level\n\tQ: Quit\n")
+    selection = getValidInput('Choose P/C/Q: ', ['P', 'p', 'C', 'c', 'Q', 'q'])
+    if selection in 'Pp':
+        levelSelect()
+    elif selection in "Cc":
+        createLevel()
+    elif selection in 'Qq':
+        return False
+    return True
+
 def createLevel():
     print('Creating new level...\n')
     variables, story = getMadLib()
@@ -8,27 +19,14 @@ def createLevel():
     levelFile.write(variables + '\n' + story)
     levelFile.close()
 
-def getMadLib():
-    keepAsking = True
-    while keepAsking:
-        variables = input('Enter the variable names required for this level separated by spaces: ')
-        story = input("Enter your story separated by spaces, enter " + variables + " for places that require user input: ")
-        print('Your MadLib:', colorify(story, variables.split(' ')))
-        if input('Save? (y/n): ') == 'y':
-            keepAsking = False
-    return variables, story
-
-def colorify(wordString, specials):
-    newWords = []
-    for word in wordString.split(' '):
-        newWord = word
-        withPeriod = word[-1] == '.'
-        if withPeriod: word = word[:-1]
-        if word in specials:
-            newWord = '\033[0;36;40m' + word + '\033[0m'
-        if withPeriod: newWord += '.'
-        newWords.append(newWord)
-    return " ".join(newWords)
+def playLevel(levelName):
+    levelFile = open('./Levels/' + levelName + '.txt', 'r')
+    variables = levelFile.readline()[:-1].split(' ')
+    story = levelFile.readline()
+    showStory = getValidInput('Do you want to see the story before filling it in? (y/n) ', ['Y', 'y', 'N', 'n'])
+    if showStory in 'Yy':
+        print(colorify(story, variables))
+    print('\nCompleted MadLib:\n' + fillOutMadLib(story, variables) + '\n')
 
 def levelSelect():
     if not os.path.isdir('Levels'):
@@ -46,15 +44,17 @@ def levelSelect():
         wantsToMakeOne = getValidInput('Want to create one? (y/n): ', ['Y', 'y', 'N', 'n'])
         if wantsToMakeOne in 'Yy':
             createLevel()
+
+def getMadLib():
+    keepAsking = True
+    while keepAsking:
+        variables = input('Enter the variable names required for this level separated by spaces: ')
+        story = input("Enter your story separated by spaces, enter " + variables + " for places that require user input: ")
+        print('Your MadLib:', colorify(story, variables.split(' ')))
+        if input('Save? (y/n): ') == 'y':
+            keepAsking = False
+    return variables, story
     
-def playLevel(levelName):
-    levelFile = open('./Levels/' + levelName + '.txt', 'r')
-    variables = levelFile.readline()[:-1].split(' ')
-    story = levelFile.readline()
-    showStory = getValidInput('Do you want to see the story before filling it in? (y/n) ', ['Y', 'y', 'N', 'n'])
-    if showStory in 'Yy':
-        print(colorify(story, variables))
-    print('\nCompleted MadLib:\n' + fillOutMadLib(story, variables) + '\n')
 
 def fillOutMadLib(story, variables):
     newWords = []
@@ -69,23 +69,24 @@ def fillOutMadLib(story, variables):
         newWords.append(newWord)
     return " ".join(newWords)
 
-def displayOptions():
-    print("Choose what you'd like to do:\n\tP: Play Level\n\tC: Create Level\n\tQ: Quit\n")
-    selection = getValidInput('Choose P/C/Q: ', ['P', 'p', 'C', 'c', 'Q', 'q'])
-    if selection in 'Pp':
-        levelSelect()
-    elif selection in "Cc":
-        createLevel()
-    elif selection in 'Qq':
-        return False
-    return True
-
 def getValidInput(prompt, validResponses):
     response = input(prompt)
     if response not in validResponses:
         print('That is an invalid response.\n')
         return getValidInput(prompt, validResponses)
     return response
+
+def colorify(wordString, specials):
+    newWords = []
+    for word in wordString.split(' '):
+        newWord = word
+        withPeriod = word[-1] == '.'
+        if withPeriod: word = word[:-1]
+        if word in specials:
+            newWord = '\033[0;36;40m' + word + '\033[0m'
+        if withPeriod: newWord += '.'
+        newWords.append(newWord)
+    return " ".join(newWords)
 
 def main():
     print('--- Mad Libs ---\n')
