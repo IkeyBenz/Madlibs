@@ -34,7 +34,7 @@ def getViableName():
 
 def playLevel(levelName):
     levelFile = open('./Levels/' + levelName + '.txt', 'r')
-    variables = levelFile.readline()[:-1].split(', ')
+    variables = levelFile.readline()[:-1].split(' ')
     story = levelFile.readline()
     if getValidInput('Do you want to see the story before filling it in? (y/n) ', ['Y', 'y', 'N', 'n']) in 'Yy':
         tprint('\n' + c.blue + levelName + ':\n   ' + c.gray + colorify(story, variables) + '\n')
@@ -53,7 +53,7 @@ def levelSelect():
             createLevel()
 
 def getMadLib():
-    variables = input(c.blue + 'Enter the variable names required for this level separated by commas & spaces (noun, adjective, verb): ' + c.yellow)
+    variables = input(c.blue + 'Enter the variable names required for this level separated by spaces (noun adjective verb): ' + c.yellow)
     story = input(c.blue + "Enter your story separated by spaces, enter " + c.cyan + variables + c.blue + " for places that require user input: " + c.gray)
     tprint(c.blue + 'Your MadLib: ' + colorify(story, variables.split(' ')) + '\n')
     if getValidInput('Save? (y/n): ', ['Y', 'y', 'N', 'n']) in 'Nn':
