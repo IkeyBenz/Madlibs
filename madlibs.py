@@ -40,10 +40,7 @@ def levelSelect():
         os.mkdir('Levels')
     options = [level[:-4] for level in os.listdir('Levels')]
     if len(options) > 0:
-        optionsString = "Levels:\n"
-        for index, level in enumerate(options):
-            optionsString += '\t' + str(index + 1) + '. ' + level + '\n'
-        print(optionsString)
+        print('Levels:\n' + ''.join(['\t' + str(index + 1) + '. ' + level + '\n' for index, level in enumerate(options)]))
         chosenLevel = getValidInput("Enter the level name you'd like to play: ", options)
         playLevel(chosenLevel)
     else:
