@@ -16,12 +16,11 @@ def displayOptions():
 def createLevel():
     tprint(c.magenta + 'Creating new level...\n')
     variables, story = getMadLib()
-    if not story: 
-        return displayOptions()
-    name = getViableName()
-    levelFile = open('Levels/' + name + '.txt', 'w')
-    levelFile.write(variables + '\n' + story)
-    levelFile.close()
+    if story: 
+        name = getViableName()
+        levelFile = open('Levels/' + name + '.txt', 'w')
+        levelFile.write(variables + '\n' + story)
+        levelFile.close()
 
 def getViableName():
     name = input(c.blue + 'What do you want to call this MadLib? ' + c.yellow)
@@ -102,3 +101,5 @@ def main():
     tprint(c.magenta + '\nThanks for playing!!!!\n' + c.end)
     
 main()
+
+list = [[1,2,3], 3, 4, 5]

@@ -5,5 +5,5 @@ blue     = "\033[1;34m"
 magenta  = "\033[1;35m"
 cyan     = "\033[1;36m"
 gray     = "\033[1;37m"
-cyan_und = '\033[4;36m'
+cyan_und = "\033[4;36m"
 end      = "\033[0;0m"

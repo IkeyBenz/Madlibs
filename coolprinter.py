@@ -6,5 +6,5 @@ def tprint(string):
     for c in string:
         sys.stdout.write(c)
         sys.stdout.flush()
-        sleep(0.03)
+        sleep(0.025)
     print('')
